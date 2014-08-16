@@ -72,15 +72,19 @@ class Bibliography
   end
 
   def neo_index_all
-    neo_index_year
-    neo_index_keywords
-    neo_index_publication
+    year_node = neo_index_year
+    keyword_nodes = neo_index_keywords
+    publication_node = neo_index_publication
+    keyword_nodes.each do |keyword_node|
+      neo.create_relationship("tagged_with", publication_node, keyword_node) if publication_node
+    end
   end
 
   def neo_index_publication
     node = neo.create_unique_node(INDEX_NAME, "publication", id, publication_as_node)
     neo.add_label(node, "publication")
     neo.add_label(node, document_type)
+    node
   rescue
     puts "whoooops #{id}"
   end
@@ -105,12 +109,14 @@ class Bibliography
   def neo_index_year
     node = neo.create_unique_node(INDEX_NAME, "date", year, {"year" => year})
     neo.add_label(node, "year")
+    node
   end
 
   def neo_index_keywords
     (author_keywords + index_keywords).map do |keyword|
       node = neo.create_unique_node(INDEX_NAME, KEYWORD_KEY, keyword, {"name" => keyword})
       neo.add_label(node, KEYWORD_KEY) 
+      node
     end
   end
 
