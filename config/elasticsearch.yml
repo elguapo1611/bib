@@ -1,0 +1,11 @@
+cluster:
+  name: elasticsearch_bib_dev
+node:
+  name: "ES Dev"
+path:
+  data: tmp/elasticsearch_data/
+  logs: log/elasticsearch/
+  plugins: /usr/local/var/lib/elasticsearch/plugins
+discovery.zen.ping.multicast.enabled: false
+http.port: 9200
+action.destructive_requires_name: false

@@ -1,0 +1,4 @@
+/log/*.log
+/log/elasticsearch/*.log
+/tmp
+/db/*.csv
